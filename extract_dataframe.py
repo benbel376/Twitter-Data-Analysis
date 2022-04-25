@@ -48,17 +48,24 @@ class TweetDfExtractor:
             source.append(items['source'])
         return source
     
+    # a function that extracts the text variable and returns a list of tweet strings
+    def find_full_text(self)->list:
+        text = []
+        for items in self.tweets_list:
+            text.append(items['text'])
+        return text
+
     # a function that inserts the extracted value lists for each variable into a dataframe.       
     def get_tweet_df(self, save=False)->pd.DataFrame:
         """required column to be generated you should be creative and add more features"""
         
-        columns = ['created_at', 'source']
+        columns = ['created_at', 'source', 'original_text']
         
         created_at = self.find_created_time()
         source = self.find_source()
+        text = self.find_full_text()
 
-
-        data = zip(created_at, source)
+        data = zip(created_at, source, text)
         df = pd.DataFrame(data=data, columns=columns)
 
         if save:
