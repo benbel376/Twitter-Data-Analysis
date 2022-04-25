@@ -33,7 +33,6 @@ class TweetDfExtractor:
         
         self.tweets_list = tweets_list
 
-    # an example function
 
     # a function that extracts the created_at variable and returns a list of date strings
     def find_created_time(self)->list:
@@ -41,17 +40,25 @@ class TweetDfExtractor:
         for items in self.tweets_list:
             created_at.append(items['created_at'])
         return created_at
-
+    
+    # a function that extracts the source variable and returns a list of html hyperlink reference strings
+    def find_source(self)->list:
+        source = []
+        for items in self.tweets_list:
+            source.append(items['source'])
+        return source
+    
     # a function that inserts the extracted value lists for each variable into a dataframe.       
     def get_tweet_df(self, save=False)->pd.DataFrame:
         """required column to be generated you should be creative and add more features"""
         
-        columns = ['created_at']
+        columns = ['created_at', 'source']
         
         created_at = self.find_created_time()
+        source = self.find_source()
 
 
-        data = zip(created_at)
+        data = zip(created_at, source)
         df = pd.DataFrame(data=data, columns=columns)
 
         if save:
