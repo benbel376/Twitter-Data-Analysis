@@ -99,7 +99,7 @@ class TweetDfExtractor:
         """
         screen_name = [] # list of screen names.
         for items in self.tweets_list:
-            screen_name.append(items['user']['screen_name'])
+            screen_name.append(items['retweeted_status']['user']['screen_name'])
         
         return screen_name
 
@@ -146,7 +146,7 @@ class TweetDfExtractor:
         """
         friends_count = [] # list of number of friends.
         for items in self.tweets_list:
-            friends_count.append(items['user']['friends_count'])
+            friends_count.append(items['retweeted_status']['user']['friends_count'])
         
         return friends_count
 
@@ -170,7 +170,7 @@ class TweetDfExtractor:
         """
         followers_count = [] # list of number of followers.
         for items in self.tweets_list:
-            followers_count.append(items['user']['followers_count'])
+            followers_count.append(items['retweeted_status']['user']['followers_count'])
         
         return followers_count
 
@@ -205,7 +205,7 @@ class TweetDfExtractor:
         a function that extracts the location.
         returns list of locations
         """
-        location = [x.get('user', {}).get('location', None) for x in self.tweets_list]
+        location = [x.get('retweeted_status', {}).get('user', {}).get('location', None) for x in self.tweets_list]
         return location
 
     
@@ -216,7 +216,7 @@ class TweetDfExtractor:
         """
         favourite_count = [] # list of number of favourites.
         for items in self.tweets_list:
-            favourite_count.append(items['user']['favourites_count'])
+            favourite_count.append(items['retweeted_status']['user']['favourites_count'])
         
         return favourite_count
 
