@@ -51,30 +51,34 @@ class TweetDfExtractor:
     
     # a function that extracts the text variable and returns a list of tweet strings
     def find_full_text(self)->list:
-        cl_uncl_text = [] # holds both cleaned and uncleaned text.
-        cl_text = []
-        uncl_text = []
+        cl_text = [] # holds the clean text
+        uncl_text = [] # original text
         for items in self.tweets_list:
             uncl_text.append(items['text'])
             cl_text.append(re.sub("^RT.*:","",items['text']))
         
-        cl_uncl_text.append(cl_text)
-        cl_uncl_text.append(uncl_text)
-        return cl_uncl_text
+        return cl_text, uncl_text
 
-    
+    # a function that extracts polarity and subjectivity from the list of tweet strings.
+    def find_sentiments(self, text: list)->list:
+        polarity = [] # contains the polarity values from the sentiment analysis.
+        self.subjectivity = [] # contains the subjectivity values from the sentiment analysis.
+        for items in text:
+            self.subjectivity.append(TextBlob(items).sentiment.subjectivity)
+            polarity.append(TextBlob(items).sentiment.polarity)
+        return polarity, self.subjectivity
     
     # a function that inserts the extracted value lists for each variable into a dataframe.       
     def get_tweet_df(self, save=False)->pd.DataFrame:
         """required column to be generated you should be creative and add more features"""
         
-        columns = ['created_at', 'source', 'original_text', 'clean_text']
+        columns = ['created_at', 'source', 'original_text', 'clean_text', 'polarity', 'subjectivity']
         created_at = self.find_created_time()
         source = self.find_source()
-        text = self.find_full_text()[1]
-        clean_text = self.find_full_text()[0]
+        clean_text, text = self.find_full_text()
+        polarity, subjectivity = self.find_sentiments(clean_text)
 
-        data = zip(created_at, source, text, clean_text)
+        data = zip(created_at, source, text, clean_text, polarity, subjectivity)
         df = pd.DataFrame(data=data, columns=columns)
 
         if save:
