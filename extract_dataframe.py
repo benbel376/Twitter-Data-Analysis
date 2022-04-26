@@ -1,6 +1,7 @@
 import json
 import pandas as pd
 from textblob import TextBlob
+import re
 
 def read_json(json_file: str)->list:
     """
@@ -50,22 +51,30 @@ class TweetDfExtractor:
     
     # a function that extracts the text variable and returns a list of tweet strings
     def find_full_text(self)->list:
-        text = []
+        cl_uncl_text = [] # holds both cleaned and uncleaned text.
+        cl_text = []
+        uncl_text = []
         for items in self.tweets_list:
-            text.append(items['text'])
-        return text
+            uncl_text.append(items['text'])
+            cl_text.append(re.sub("^RT.*:","",items['text']))
+        
+        cl_uncl_text.append(cl_text)
+        cl_uncl_text.append(uncl_text)
+        return cl_uncl_text
 
+    
+    
     # a function that inserts the extracted value lists for each variable into a dataframe.       
     def get_tweet_df(self, save=False)->pd.DataFrame:
         """required column to be generated you should be creative and add more features"""
         
-        columns = ['created_at', 'source', 'original_text']
-        
+        columns = ['created_at', 'source', 'original_text', 'clean_text']
         created_at = self.find_created_time()
         source = self.find_source()
-        text = self.find_full_text()
+        text = self.find_full_text()[1]
+        clean_text = self.find_full_text()[0]
 
-        data = zip(created_at, source, text)
+        data = zip(created_at, source, text, clean_text)
         df = pd.DataFrame(data=data, columns=columns)
 
         if save:
