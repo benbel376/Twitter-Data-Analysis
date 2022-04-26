@@ -59,6 +59,7 @@ class TweetDfExtractor:
         
         return cl_text, uncl_text
 
+
     # a function that extracts polarity and subjectivity from the list of tweet strings.
     def find_sentiments(self, text: list)->list:
         polarity = [] # contains the polarity values from the sentiment analysis.
@@ -66,19 +67,31 @@ class TweetDfExtractor:
         for items in text:
             self.subjectivity.append(TextBlob(items).sentiment.subjectivity)
             polarity.append(TextBlob(items).sentiment.polarity)
+        
         return polarity, self.subjectivity
     
+    
+    # a function that extracts authors name.
+    def find_screen_name(self)->list:
+        screen_name = [] # list of screen names.
+        for items in self.tweets_list:
+            screen_name.append(items['user']['screen_name'])
+        
+        return screen_name
+
+
     # a function that inserts the extracted value lists for each variable into a dataframe.       
     def get_tweet_df(self, save=False)->pd.DataFrame:
         """required column to be generated you should be creative and add more features"""
         
-        columns = ['created_at', 'source', 'original_text', 'clean_text', 'polarity', 'subjectivity']
+        columns = ['created_at', 'source', 'original_text', 'clean_text', 'polarity', 'subjectivity', 'original_author']
         created_at = self.find_created_time()
         source = self.find_source()
         clean_text, text = self.find_full_text()
         polarity, subjectivity = self.find_sentiments(clean_text)
+        screen_name = self.find_screen_name()
 
-        data = zip(created_at, source, text, clean_text, polarity, subjectivity)
+        data = zip(created_at, source, text, clean_text, polarity, subjectivity, screen_name)
         df = pd.DataFrame(data=data, columns=columns)
 
         if save:
