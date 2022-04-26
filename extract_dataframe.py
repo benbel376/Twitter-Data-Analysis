@@ -79,19 +79,36 @@ class TweetDfExtractor:
         
         return screen_name
 
+    # a function that extracts the language used in the tweet.
+    def find_lang(self)->list:
+        lang = [] # list of languages
+        for items in self.tweets_list:
+            lang.append(items['lang'])
+        
+        return lang
+
+    # a function that extracts the number of retweets.
+    def find_retweet_count(self)->list:
+        retweet_count = [] # list of number of retweets.
+        for items in self.tweets_list:
+            retweet_count.append(items['retweet_count'])
+        
+        return retweet_count
 
     # a function that inserts the extracted value lists for each variable into a dataframe.       
     def get_tweet_df(self, save=False)->pd.DataFrame:
         """required column to be generated you should be creative and add more features"""
         
-        columns = ['created_at', 'source', 'original_text', 'clean_text', 'polarity', 'subjectivity', 'original_author']
+        columns = ['created_at', 'source', 'original_text', 'clean_text', 'polarity', 'subjectivity', 'original_author', 'language', 'retweet_count']
         created_at = self.find_created_time()
         source = self.find_source()
         clean_text, text = self.find_full_text()
         polarity, subjectivity = self.find_sentiments(clean_text)
         screen_name = self.find_screen_name()
+        lang = self.find_lang()
+        retweet_count = self.find_retweet_count()
 
-        data = zip(created_at, source, text, clean_text, polarity, subjectivity, screen_name)
+        data = zip(created_at, source, text, clean_text, polarity, subjectivity, screen_name, lang, retweet_count)
         df = pd.DataFrame(data=data, columns=columns)
 
         if save:
