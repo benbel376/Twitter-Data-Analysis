@@ -128,38 +128,6 @@ class TweetDfExtractor:
         return followers_count
 
 
-
-
-    # a function that extracts the mentions in the tweet.
-    def find_mentions(self)->list:
-        mentions = [] # list of mentions
-        for items in self.tweets_list:
-             mentions.append(items['mentions'])
-        
-        return mentions
-
-    # a function that extracts sensitivity status.
-    def is_sensitive(self)->list:
-        sensitivity = [] # list of sensitivity status.
-        for items in self.tweets_list:
-            sensitivity.append(items['possibly_sensitive'])
-        
-        return sensitivity
-
-    # a function that extracts the location.
-    def find_location(self)->list:
-        location = [x.get('user', {}).get('location', None) for x in self.tweets_list]
-        return location
-
-    # a function that extracts the number of friends.
-    def find_favourite_count(self)->list:
-        favourite_count = [] # list of number of followers.
-        for items in self.tweets_list:
-            favourite_count.append(items['user']['favourites_count'])
-        
-        return favourite_count
-
-
     # a function that inserts the extracted value lists for each variable into a dataframe.       
     def get_tweet_df(self, save=False)->pd.DataFrame:
         """required column to be generated you should be creative and add more features"""
