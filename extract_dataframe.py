@@ -2,7 +2,6 @@ import json
 import pandas as pd
 from textblob import TextBlob
 import re
-import os
 
 def read_json(json_file: str)->list:
     """
@@ -159,7 +158,7 @@ class TweetDfExtractor:
         """
         statuses = [] # list of statuses
         for items in self.tweets_list:
-            statuses.append(items['user']['statuses_count'])
+            statuses.append(items['retweeted_status']['user']['statuses_count'])
         
         return statuses
 
