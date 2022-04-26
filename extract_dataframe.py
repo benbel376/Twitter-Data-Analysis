@@ -2,6 +2,7 @@ import json
 import pandas as pd
 from textblob import TextBlob
 import re
+import os
 
 def read_json(json_file: str)->list:
     """
@@ -38,7 +39,8 @@ class TweetDfExtractor:
     
     def find_created_time(self)->list:
         """
-        a function that extracts the created_at variable and returns a list of date strings.
+        a function that extracts the created_at 
+        variable and returns a list of date strings.
         returns a list of creation date and times.
         """
         created_at = [] # aholds a list of all created time and date
@@ -49,7 +51,8 @@ class TweetDfExtractor:
     
     def find_source(self)->list:
         """
-        a function that extracts the source variable and returns a list of html hyperlink reference strings.
+        a function that extracts the source variable and 
+        returns a list of html hyperlink reference strings.
         returns a list of soruce hyperlink strings.
         """
         source = [] # a list that holds hyper link references
@@ -60,7 +63,8 @@ class TweetDfExtractor:
     
     def find_full_text(self)->list:
         """
-        a function that extracts the text variable and returns a list of tweet strings.
+        a function that extracts the text variable and 
+        returns a list of tweet strings.
         returns two lists of original and cleaned text data.
         """
         cl_text = [] # holds the clean text
@@ -75,7 +79,8 @@ class TweetDfExtractor:
     
     def find_sentiments(self, text: list)->list:
         """
-        a function that extracts polarity and subjectivity from the list of tweet strings.
+        a function that extracts polarity and 
+        subjectivity from the list of tweet strings.
         returns a two lists of polarity and subjectivity scores.
         """
         polarity = [] # contains the polarity values from the sentiment analysis.
@@ -219,11 +224,16 @@ class TweetDfExtractor:
           
     def get_tweet_df(self, save=False)->pd.DataFrame:
         """
-        a function that inserts the extracted value lists for each variable into a dataframe. 
+        a function that inserts the extracted 
+        value lists for each variable into a dataframe. 
         returns a dataframe with all extracted columns
         """
         
-        columns = ['created_at', 'source', 'original_text', 'clean_text', 'polarity', 'subjectivity', 'original_author', 'language', 'retweet_count', 'friends_count', 'hashtags', 'statuses', 'followers_count', 'user_mentions', 'favourites_count', 'location']
+        columns = ['created_at', 'source', 'original_text', 'clean_text', 'polarity', 
+        'subjectivity', 'screen_name', 'language', 'retweet_count', 'friends_count', 
+        'hashtags', 'statuses', 'followers_count', 'user_mentions', 'possibly_sensitive', 
+        'favourites_count', 'location']
+
         created_at = self.find_created_time()
         source = self.find_source()
         clean_text, text = self.find_full_text()
@@ -238,9 +248,13 @@ class TweetDfExtractor:
         mentions = self.find_mentions()
         location = self.find_location()
         favourite = self.find_favourite_count();
+        sensitive = self.is_sensitive();
         
 
-        data = zip(created_at, source, text, clean_text, polarity, subjectivity, screen_name, lang, retweet_count, friends_count, hashtags, statuses_count, followers_count, mentions, favourite, location)
+        data = zip(created_at, source, text, clean_text, 
+        polarity, subjectivity, screen_name, lang, retweet_count,
+         friends_count, hashtags, statuses_count, followers_count, 
+         mentions, sensitive, favourite, location)
         df = pd.DataFrame(data=data, columns=columns)
 
         if save:
