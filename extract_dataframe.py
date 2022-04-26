@@ -253,7 +253,7 @@ class TweetDfExtractor:
 if __name__ == "__main__":
     # required column to be generated you should be creative and add more features
     
-    _, tweet_list = read_json("E:/10/Twitter-Data-Analysis/data/Economic_Twitter_Data.json")
+    _, tweet_list = read_json("../data/Economic_Twitter_Data.json")
     tweet = TweetDfExtractor(tweet_list)
     tweet_df = tweet.get_tweet_df(True) 
 
