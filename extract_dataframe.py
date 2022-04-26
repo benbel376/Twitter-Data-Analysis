@@ -44,7 +44,7 @@ class TweetDfExtractor:
     
     # a function that extracts the source variable and returns a list of html hyperlink reference strings
     def find_source(self)->list:
-        source = []
+        source = [] # a list that holds hyper link references
         for items in self.tweets_list:
             source.append(items['source'])
         return source
