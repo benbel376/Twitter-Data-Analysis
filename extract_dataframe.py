@@ -95,11 +95,28 @@ class TweetDfExtractor:
         
         return retweet_count
 
+    # a function that extracts the hashtags used in the tweet.
+    def find_hashtags(self)->list:
+        hashtags = [] # list of hashtags
+        for items in self.tweets_list:
+             hashtags.append(items['entities']['hashtags'])
+        
+        return hashtags
+
+    # a function that extracts the number of friends.
+    def find_friends_count(self)->list:
+        friends_count = [] # list of number of friends.
+        for items in self.tweets_list:
+            friends_count.append(items['user']['friends_count'])
+        
+        return friends_count
+
+
     # a function that inserts the extracted value lists for each variable into a dataframe.       
     def get_tweet_df(self, save=False)->pd.DataFrame:
         """required column to be generated you should be creative and add more features"""
         
-        columns = ['created_at', 'source', 'original_text', 'clean_text', 'polarity', 'subjectivity', 'original_author', 'language', 'retweet_count']
+        columns = ['created_at', 'source', 'original_text', 'clean_text', 'polarity', 'subjectivity', 'original_author', 'language', 'retweet_count', 'friends_count', 'hashtags']
         created_at = self.find_created_time()
         source = self.find_source()
         clean_text, text = self.find_full_text()
@@ -107,8 +124,10 @@ class TweetDfExtractor:
         screen_name = self.find_screen_name()
         lang = self.find_lang()
         retweet_count = self.find_retweet_count()
+        friends_count = self.find_friends_count()
+        hashtags = self.find_hashtags()
 
-        data = zip(created_at, source, text, clean_text, polarity, subjectivity, screen_name, lang, retweet_count)
+        data = zip(created_at, source, text, clean_text, polarity, subjectivity, screen_name, lang, retweet_count, friends_count, hashtags)
         df = pd.DataFrame(data=data, columns=columns)
 
         if save:
