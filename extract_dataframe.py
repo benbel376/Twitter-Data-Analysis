@@ -37,7 +37,7 @@ class TweetDfExtractor:
 
     # a function that extracts the created_at variable and returns a list of date strings
     def find_created_time(self)->list:
-        created_at = []
+        created_at = [] # aholds a list of all created time and date
         for items in self.tweets_list:
             created_at.append(items['created_at'])
         return created_at
