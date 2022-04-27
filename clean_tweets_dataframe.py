@@ -42,8 +42,7 @@ class Clean_Tweets:
         """
         
         df['polarity'] = pd.to_numeric(df['polarity'])
-        df['favorite_count'] = pd.to_numeric(df['favorite_count'])
-        df['screen_count'] = pd.to_numeric(df['screen_count'])
+        df['favourites_count'] = pd.to_numeric(df['favourites_count'])
         df['subjectivity'] = pd.to_numeric(df['subjectivity'])
         df['retweet_count'] = pd.to_numeric(df['retweet_count'])
         df['friends_count'] = pd.to_numeric(df['friends_count'])
@@ -57,6 +56,6 @@ class Clean_Tweets:
         remove non english tweets from lang
         """
         
-        df = df[df['lang']=='en']
+        df = df[df['language']=='en']
         
         return df
