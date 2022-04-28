@@ -5,7 +5,7 @@ class Clean_Tweets:
     """
     def __init__(self, df:pd.DataFrame):
         self.df = df
-        print('Automation in Action...!!!')
+        print('Data cleaning in Action...!!!')
         
     def drop_unwanted_column(self, df:pd.DataFrame)->pd.DataFrame:
         """
@@ -15,6 +15,8 @@ class Clean_Tweets:
         unwanted_rows = df[df['retweet_count'] == 'retweet_count' ].index
         df.drop(unwanted_rows , inplace=True)
         df = df[df['polarity'] != 'polarity']
+
+        print('Unwanted_columns successfully removed')
         
         return df
     def drop_duplicate(self, df:pd.DataFrame)->pd.DataFrame:
@@ -23,6 +25,7 @@ class Clean_Tweets:
         """
         df.drop_duplicates(['screen_name','original_text','created_at'],keep="first")
 
+        print('Duplicate rows successfully removed')
         
         return df
     def convert_to_datetime(self, df:pd.DataFrame)->pd.DataFrame:
@@ -32,6 +35,8 @@ class Clean_Tweets:
         df['created_at'] = pd.to_datetime(df['created_at'])
         
         df = df[df['created_at'] >= '2020-12-31' ]
+
+        print('Strings successfully converted to datetime object')
         
         return df
     
@@ -48,6 +53,7 @@ class Clean_Tweets:
         df['friends_count'] = pd.to_numeric(df['friends_count'])
         df['followers_count'] = pd.to_numeric(df['followers_count'])
        
+        print('Strings successfully converted to numeric object')
         
         return df
     
@@ -57,5 +63,7 @@ class Clean_Tweets:
         """
         
         df = df[df['language']=='en']
+
+        print('Non-English languages succesfully removed')
         
         return df
