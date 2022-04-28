@@ -22,6 +22,7 @@ def read_json(json_file: str)->list:
     
     return len(tweets_data), tweets_data
 
+
 class TweetDfExtractor:
     """
     this function will parse tweets json into a pandas dataframe
@@ -48,6 +49,7 @@ class TweetDfExtractor:
         
         return created_at
     
+
     def find_source(self)->list:
         """
         a function that extracts the source variable and 
@@ -57,6 +59,7 @@ class TweetDfExtractor:
         source = [] # a list that holds hyper link references
         for items in self.tweets_list:
             source.append(items['source'])
+        
         return source
     
     
@@ -103,6 +106,19 @@ class TweetDfExtractor:
         
         return screen_name
 
+    
+    def find_author_name(self)->list:
+        """
+        a function that extracts original author screen name.
+        returns a list of screen names.
+        """
+        author_name = [] # list of original authors' screen names.
+        for items in self.tweets_list:
+            author_name.append(items.get('retweeted_status', None).get('user', None).get('screen_name', None))
+        
+        return author_name
+
+    
     def find_lang(self)->list:
         """
         a function that extracts the language used in the tweet. 
@@ -229,7 +245,7 @@ class TweetDfExtractor:
         """
         
         columns = ['created_at', 'source', 'original_text', 'clean_text', 'polarity', 
-        'subjectivity', 'screen_name', 'language', 'retweet_count', 'friends_count', 
+        'subjectivity', 'screen_name', 'original_author', 'language', 'retweet_count', 'friends_count', 
         'hashtags', 'statuses', 'followers_count', 'user_mentions', 'possibly_sensitive', 
         'favourites_count', 'location']
 
@@ -238,6 +254,7 @@ class TweetDfExtractor:
         clean_text, text = self.find_full_text()
         polarity, subjectivity = self.find_sentiments(clean_text)
         screen_name = self.find_screen_name()
+        original_author = self.find_author_name()
         lang = self.find_lang()
         retweet_count = self.find_retweet_count()
         friends_count = self.find_friends_count()
@@ -251,7 +268,7 @@ class TweetDfExtractor:
         
 
         data = zip(created_at, source, text, clean_text, 
-        polarity, subjectivity, screen_name, lang, retweet_count,
+        polarity, subjectivity, screen_name, original_author, lang, retweet_count,
          friends_count, hashtags, statuses_count, followers_count, 
          mentions, sensitive, favourite, location)
         df = pd.DataFrame(data=data, columns=columns)
