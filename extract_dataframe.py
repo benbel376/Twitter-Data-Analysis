@@ -205,7 +205,7 @@ class TweetDfExtractor:
         a function that extracts the location.
         returns list of locations
         """
-        location = [x.get('retweeted_status', {}).get('user', {}).get('location', None) for x in self.tweets_list]
+        location = [x.get('user', {}).get('location', None) for x in self.tweets_list]
         return location
 
     
