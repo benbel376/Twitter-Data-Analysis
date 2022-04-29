@@ -1,4 +1,5 @@
 import pandas as pd
+import re
 class Clean_Tweets:
     """
     The PEP8 Standard AMAZING!!!
@@ -67,3 +68,11 @@ class Clean_Tweets:
         print('Non-English languages succesfully removed')
         
         return df
+
+    def get_source_name(self, source: str):
+        """
+        returns device name from source text
+        """
+        res = re.split('<|>', source)[2].strip()
+        
+        return res  
