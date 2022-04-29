@@ -245,7 +245,7 @@ class TweetDfExtractor:
         """
         
         columns = ['created_at', 'source', 'original_text', 'clean_text', 'polarity', 
-        'subjectivity', 'screen_name', 'original_author', 'language', 'retweet_count', 'friends_count', 
+        'subjectivity', 'screen_name', 'language', 'retweet_count', 'friends_count', 
         'hashtags', 'statuses', 'followers_count', 'user_mentions', 'possibly_sensitive', 
         'favourites_count', 'location']
 
@@ -254,7 +254,7 @@ class TweetDfExtractor:
         clean_text, text = self.find_full_text()
         polarity, subjectivity = self.find_sentiments(clean_text)
         screen_name = self.find_screen_name()
-        original_author = self.find_author_name()
+        # original_author = self.find_author_name()
         lang = self.find_lang()
         retweet_count = self.find_retweet_count()
         friends_count = self.find_friends_count()
@@ -268,7 +268,7 @@ class TweetDfExtractor:
         
 
         data = zip(created_at, source, text, clean_text, 
-        polarity, subjectivity, screen_name, original_author, lang, retweet_count,
+        polarity, subjectivity, screen_name, lang, retweet_count,
          friends_count, hashtags, statuses_count, followers_count, 
          mentions, sensitive, favourite, location)
         df = pd.DataFrame(data=data, columns=columns)
