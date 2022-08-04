@@ -1,16 +1,46 @@
 # Twitter-Data-Analysis
 
-<h1> Here are performed actions </h1>
+It is an analysis done on data extracted from Twitter based on chosen hashtags. The tweets focus on the war between Ukraine and Russia as well as global inflation rates.
 
-<ul>
-    <li> Repository was forked </li>
-    <li> fix_bug branch was created</li>
-    <li> in fix_bug branch <i>fix_clean_tweets_datafram.py</i> was renamed to <i>clean_tweets_dataframe.py</i> </li>
-    <li> in fix_bug branch <i>fix_extract_dataframe.py</i> was renamed to <i>extract_dataframe.py</i> </li>
-    <li> after fixing bugs, the fix_bug branch was merged back into the main branch after a pull request.</li>
-    <li> a new branch called make_unittest branch was created to edit the unittest files</li>
-    <li> finally the make_unittest branch was merged into main branch and a github action was created to execute test scripts during merges and pushes<li>
-</ul>
+## Usage
+1. Docker(Recommended)
 
-task 1 complete
-task 2 pending...
+You need to have docker
+```
+   1. git clone https://github.com/benbel376/Twitter-Data-Analysis.git
+   2. Extract the file
+```
+```python
+cd Twitter-Data-Analysis
+docker-compose up
+```
+2. Manual build
+   Run the extract and clean modules
+```python
+python extract_dataframe.py
+python clean_tweets_dataframe.py
+```
+```python
+pip3 install -r requirements.txt
+streamlit run app.py
+```
+
+    This will up a Postgres database on local pc and connect with streamlit app
+
+## Test
+To test the methods written in the modules use the pytest package and run:
+```python
+pytest
+```
+## Usage
+
+
+![image](https://user-images.githubusercontent.com/44437166/182877191-96ede8ac-7cb0-42aa-b11e-9a26a1db6a54.png)
+
+## Contributing
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+[MIT](https://choosealicense.com/licenses/mit/)
